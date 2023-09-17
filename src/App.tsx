@@ -11,7 +11,7 @@ function App() {
 	}
 	
 	
-	let [starWarsData, setStarWarsData] = useState(test) // this extracts data useing test ???
+	let [starWarsData, setStarWarsData] = useState(test) // this extracts data using test ???
 
     // 3. Create out useEffect function
 	const url = "https://swapi.dev/api/people/1/"
