@@ -1,5 +1,7 @@
 import {useEffect, useState} from "react"
 
+import URL from "../util/url"
+
 interface Character {
 	name:string,
 	height:string,
@@ -13,7 +15,7 @@ const StarWarsAPICall = () => {
 	const [json, setJson] = useState<Character | null >(null)
 	const [errorMessage, setErrorMessage] = useState("")
 	
-	const URL = "https://swapi.dev/api/people/1/"
+
 	
 	  
 	useEffect(() => {
