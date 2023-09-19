@@ -3,7 +3,9 @@ import { setupServer } from "msw/node";
 import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
 
-const URL = 'https://swapi.dev/api/people/1/'
+import {ERROR_500, ERROR_418} from "./util/error_codes"
+
+import URL from "./util/url"
 
 import App from "./App";
 
@@ -26,6 +28,27 @@ describe("<App>",  () => {
 	 
 	 // note find by text does not get partial strings so just searching for luke fails
      expect(await screen.findByText("Name:Luke Skywalker")).toBeInTheDocument()
+  });
+  
+  
+  test("on server error 500,  correct error message", async () => {
+    server.use(
+      rest.get(URL , (req, res, ctx) => {
+        return res(ctx.status(500));
+      })
+    );
+    render(<App />);
+    expect(await screen.findByText(ERROR_500)).toBeInTheDocument();
+  });
+
+  test("on server error 418,  correct error message", async () => {
+    server.use(
+      rest.get(URL, (req, res, ctx) => {
+        return res(ctx.status(418));
+      })
+    );
+    render(<App />);
+    expect(await screen.findByText(ERROR_418)).toBeInTheDocument();
   });
   
 })

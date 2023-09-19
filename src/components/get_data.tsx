@@ -2,6 +2,8 @@ import {useEffect, useState} from "react"
 
 import URL from "../util/url"
 
+import {ERROR_500, ERROR_418} from "../util/error_codes"
+
 interface Character {
 	name:string,
 	height:string,
@@ -14,24 +16,37 @@ const StarWarsAPICall = () => {
 	
 	const [json, setJson] = useState<Character | null >(null)
 	const [errorMessage, setErrorMessage] = useState("")
-	
+	const [status, setStatus] = useState<number>()
 
 	
 	  
 	useEffect(() => {
 	
 		const getData = async () => {
+			
+			let responce
+			
 			try{
-				const responce = await fetch(URL)
-				const json = await responce.json()
-				setJson(json)
+				responce = await fetch(URL)
+				//if (responce.status === 200) {
+					const json = await responce.json()
+					setJson(json)
+				//}
+				//setStatus(responce.status)
 			}catch(error:any) {
 				//console.log("ERROR ",error.message)
-				
-				setErrorMessage(error.message)
-					
+				setErrorMessage(error.name)
 			}
-		
+			
+			if(responce?.ok) {
+				
+			}
+			else {
+				//console.log("responce code: "+responce?.status)
+				
+				setStatus(responce?.status)
+			}
+			
 		}
 	
 		getData()
@@ -40,6 +55,11 @@ const StarWarsAPICall = () => {
 	//console.log("message length", errorMessage.length)
 
 	if(errorMessage.length > 0) {
+		
+		//console.log("status is "+status)
+		if(status == 500) return (<>{ERROR_500}</>)
+		if(status == 418) return (<>{ERROR_418}</>)
+			
 		return (
 			<>
 				Error:{errorMessage}
