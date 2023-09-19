@@ -1,6 +1,6 @@
 # Star Wars Api
 
-get first characters and has proper error handling
+Get first character from Star Wars API with proper error handling and tests!
 
 
 npm install
